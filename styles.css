@@ -94,6 +94,9 @@ h1, h2, h3, h4, .title-highlight {
     position: sticky;
     top: 0;
     z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo-area {
@@ -199,6 +202,38 @@ h1, h2, h3, h4, .title-highlight {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-subtle);
+    flex-wrap: wrap; /* Added for responsive wrap */
+    gap: 1rem; /* Space when wrapping */
+}
+
+/* Quick Actions in Employee Panel */
+.quick-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+.btn-header-logout {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    padding: 0.5rem;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-header-logout:hover {
+    color: var(--danger-color);
+    background: #fef2f2;
+    transform: none; /* Override standard button hover */
 }
 
 .card-container, .control-panel {
@@ -676,10 +711,16 @@ tbody tr:hover { background-color: var(--bg-input); }
     .header-simple, .section-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 1.5rem;
     }
     
-    #btn-logout, #btn-back, #btn-back-metrics {
+    .quick-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    #btn-back, #btn-back-metrics {
         align-self: flex-start;
     }
 

@@ -19,6 +19,9 @@
                     <span>Control de Personal</span>
                 </div>
             </div>
+            <button id="btn-logout" class="btn-header-logout" title="Cerrar Sesión" aria-label="Cerrar Sesión">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </button>
         </header>
         
         <main class="main-content">
@@ -47,9 +50,14 @@
                             <h2>Panel Operativo</h2>
                             <p class="text-light">Seleccione el personal para registrar actividades.</p>
                         </div>
-                        <button id="btn-logout" class="btn-secondary btn-icon">
-                            <span>Cerrar Sesión</span> 🚪
-                        </button>
+                        <div class="quick-actions">
+                            <button id="btn-add-employee" class="btn-outline btn-sm">
+                                <span class="icon">+</span> Nuevo Empleado
+                            </button>
+                            <button id="btn-manage-employees" class="btn-outline btn-sm">
+                                <span class="icon">👥</span> Admin. Personal
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="control-panel">
@@ -130,12 +138,6 @@
                     <div class="system-actions card-container">
                         <h3 class="section-subtitle">Gestión del Sistema</h3>
                         <div class="action-grid">
-                            <button id="btn-add-employee" class="btn-outline">
-                                <span class="icon">+</span> Nuevo Empleado
-                            </button>
-                            <button id="btn-manage-employees" class="btn-outline">
-                                <span class="icon">👥</span> Admin. Personal
-                            </button>
                             <button id="btn-add-task" class="btn-outline">
                                 <span class="icon">+</span> Nueva Actividad
                             </button>

@@ -350,13 +350,13 @@ function renderSummary(registros) {
         '<div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 10px;">' +
         '<div style="background: #e6fcf5; border: 1px solid #20c997; padding: 10px; border-radius: 6px; flex: 1; min-width: 200px;">' +
         '<div style="color: #20c997; font-weight: bold; margin-bottom: 5px;">🏆 Más Eficiente</div>' +
-        '<div style="font-size: 1.2em;">' + highest.emp + '</div>' +
-        '<div>' + highest.total + ' act (' + ((highest.total / totalGlobal) * 100).toFixed(1) + '%)</div>' +
+        '<div style="font-size: 1.2em; color: var(--text-main); font-weight: 600;">' + highest.emp + '</div>' +
+        '<div style="color: var(--text-muted);">' + highest.total + ' act (' + ((highest.total / totalGlobal) * 100).toFixed(1) + '%)</div>' +
         '</div>' +
         '<div style="background: #fff5f5; border: 1px solid #ff8787; padding: 10px; border-radius: 6px; flex: 1; min-width: 200px;">' +
         '<div style="color: #fa5252; font-weight: bold; margin-bottom: 5px;">📉 Menos Eficiente</div>' +
-        '<div style="font-size: 1.2em;">' + lowest.emp + '</div>' +
-        '<div>' + lowest.total + ' act (' + ((lowest.total / totalGlobal) * 100).toFixed(1) + '%)</div>' +
+        '<div style="font-size: 1.2em; color: var(--text-main); font-weight: 600;">' + lowest.emp + '</div>' +
+        '<div style="color: var(--text-muted);">' + lowest.total + ' act (' + ((lowest.total / totalGlobal) * 100).toFixed(1) + '%)</div>' +
         '</div>' +
         '</div></div>';
     
