@@ -38,7 +38,7 @@ async function fetchAPI(endpoint, method = 'GET', body = null) {
     }
     
     try {
-        const response = await fetch(`http://localhost:3000/api/${endpoint}`, options);
+        const response = await fetch(`/api/${endpoint}`, options);
         return await response.json();
     } catch (error) {
         console.error('API Error:', error);
