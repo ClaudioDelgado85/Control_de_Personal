@@ -3,158 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Personal</title>
+    <title>Sistema de Gestión Municipal • Control de Personal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="login-section" class="section active" style="max-width: 400px; margin: 100px auto; padding: 20px; text-align: center; border: 1px solid #ccc; border-radius: 8px; background: white;">
-        <h2>Iniciar Sesión</h2>
-        <div style="margin-bottom: 15px;">
-            <input type="text" id="login-username" placeholder="Usuario" style="width: 100%; padding: 10px; margin-bottom: 10px;">
-            <input type="password" id="login-password" placeholder="Contraseña" style="width: 100%; padding: 10px;">
-        </div>
-        <button id="btn-login" class="btn-primary" style="width: 100%;">Ingresar</button>
-        <p id="login-error" style="color: red; margin-top: 10px; display: none;">Credenciales incorrectas</p>
-    </div>
-
-    <div id="app" style="display: none;">
-        <section id="employees-section" class="section active">
-            <div class="header-simple">
-                <h1>Seleccionar Empleado</h1>
-                <button id="btn-logout" class="btn-secondary" style="margin-left:auto;">Cerrar Sesión</button>
-            </div>
-            <div class="date-selector">
-                <label for="selected-date">Fecha:</label>
-                <input type="date" id="selected-date">
-            </div>
-            <div class="employee-list" id="employee-list"></div>
-            <button id="btn-metrics" class="btn-primary btn-full">Ver Métricas</button>
-        </section>
-
-        <section id="tasks-section" class="section hidden">
-            <header>
-                <button id="btn-back" class="btn-secondary">← Volver</button>
-                <h2 id="employee-title">Empleado</h2>
-            </header>
-            <div class="date-selector">
-                <label for="task-date">Fecha:</label>
-                <input type="date" id="task-date">
-            </div>
-            <div class="task-counter-list" id="task-counter-list"></div>
-            <div class="actions">
-                <button id="btn-save" class="btn-primary btn-full">Guardar</button>
-            </div>
-            <p id="save-message" class="success hidden">¡Guardado exitosamente!</p>
-        </section>
-
-        <section id="metrics-section" class="section hidden">
-            <header>
-                <h2>Métricas de Desempeño</h2>
-                <button id="btn-back-metrics" class="btn-secondary">← Volver</button>
-            </header>
-            <div class="date-range">
-                <div>
-                    <label for="start-date">Desde:</label>
-                    <input type="date" id="start-date">
+    <div class="app-wrapper">
+        <header class="global-header">
+            <div class="logo-area">
+                <div class="logo-icon">🏛️</div>
+                <div class="logo-text">
+                    <h1>MuniAdmin</h1>
+                    <span>Control de Personal</span>
                 </div>
-                <div>
-                    <label for="end-date">Hasta:</label>
-                    <input type="date" id="end-date">
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <div id="login-section" class="section active login-container">
+                <div class="login-card">
+                    <div class="auth-icon">🔐</div>
+                    <h2>Acceso Autorizado</h2>
+                    <p class="auth-subtitle">Ingrese sus credenciales corporativas</p>
+                    <div class="input-group">
+                        <label for="login-username">Usuario</label>
+                        <input type="text" id="login-username" placeholder="Ej: admin">
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" placeholder="••••••••">
+                    </div>
+                    <button id="btn-login" class="btn-primary btn-full btn-large">Ingresar al Sistema</button>
+                    <p id="login-error" class="error-msg hidden">Credenciales incorrectas. Verifique por favor.</p>
                 </div>
-                <button id="btn-filter" class="btn-primary">Filtrar</button>
             </div>
-            <div class="chart-container">
-                <canvas id="performance-chart"></canvas>
-            </div>
-            <div class="summary-table" id="summary-table"></div>
-            <div id="efficiency-box" style="margin-bottom: 20px;"></div>
-            <div class="data-actions">
-                <button id="btn-clear-data" class="btn-secondary" style="background-color: #ff7675; color: white;">Borrar Historial</button>
-            </div>
-            <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-                <button id="btn-add-employee" class="btn-secondary" style="flex: 1;">+ Agregar Empleado</button>
-                <button id="btn-manage-employees" class="btn-secondary" style="flex: 1;">👥 Administrar Personal</button>
-            </div>
-            <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-                <button id="btn-add-task" class="btn-secondary" style="flex: 1;">+ Agregar Actividad</button>
-                <button id="btn-manage-tasks" class="btn-secondary" style="flex: 1;">✏️ Administrar Actividades</button>
-            </div>
-            <button id="btn-print-report" class="btn-primary btn-full">Imprimir Informe</button>
-        </section>
 
+            <div id="app" style="display: none;">
+                <section id="employees-section" class="section active fade-in">
+                    <div class="header-simple">
+                        <div>
+                            <h2>Panel Operativo</h2>
+                            <p class="text-light">Seleccione el personal para registrar actividades.</p>
+                        </div>
+                        <button id="btn-logout" class="btn-secondary btn-icon">
+                            <span>Cerrar Sesión</span> 🚪
+                        </button>
+                    </div>
+                    
+                    <div class="control-panel">
+                        <div class="date-selector">
+                            <label for="selected-date">Fecha de Registro Operativo:</label>
+                            <input type="date" id="selected-date" class="input-elegant">
+                        </div>
+                    </div>
+                    
+                    <div class="employee-grid" id="employee-list">
+                        <!-- Employee items injected by JS -->
+                    </div>
+                    
+                    <div class="action-bar-bottom">
+                        <button id="btn-metrics" class="btn-primary btn-large btn-full">
+                            📊 Ver Informe de Rendimiento (Métricas)
+                        </button>
+                    </div>
+                </section>
+
+                <section id="tasks-section" class="section hidden fade-in">
+                    <header class="section-header">
+                        <button id="btn-back" class="btn-ghost">← Volver al Panel</button>
+                        <h2 id="employee-title" class="title-highlight">Empleado</h2>
+                    </header>
+                    
+                    <div class="control-panel">
+                        <div class="date-selector">
+                            <label for="task-date">Fecha de Asignación:</label>
+                            <input type="date" id="task-date" class="input-elegant">
+                        </div>
+                    </div>
+                    
+                    <div class="card-container">
+                        <div class="task-counter-list" id="task-counter-list">
+                            <!-- Tasks injected by JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="actions fixed-bottom-action">
+                        <button id="btn-save" class="btn-primary btn-large btn-full">💾 Guardar Registro Diario</button>
+                        <div id="save-message" class="success-toast hidden">✔️ ¡Registro centralizado con éxito!</div>
+                    </div>
+                </section>
+
+                <section id="metrics-section" class="section hidden fade-in">
+                    <header class="section-header">
+                        <div>
+                            <h2 class="title-highlight">Auditoría y Rendimiento</h2>
+                            <p class="text-light">Métricas operativas del personal.</p>
+                        </div>
+                        <button id="btn-back-metrics" class="btn-ghost">← Volver al Panel</button>
+                    </header>
+                    
+                    <div class="control-panel date-range-box">
+                        <div class="range-inputs">
+                            <div class="input-group-inline">
+                                <label for="start-date">Desde:</label>
+                                <input type="date" id="start-date" class="input-elegant">
+                            </div>
+                            <div class="input-group-inline">
+                                <label for="end-date">Hasta:</label>
+                                <input type="date" id="end-date" class="input-elegant">
+                            </div>
+                        </div>
+                        <button id="btn-filter" class="btn-primary btn-filter">Aplicar Filtro</button>
+                    </div>
+                    <div class="chart-container card-container">
+                        <canvas id="performance-chart"></canvas>
+                    </div>
+                    
+                    <div class="summary-table card-container" id="summary-table">
+                        <!-- Table injected by JS -->
+                    </div>
+                    
+                    <div id="efficiency-box" class="efficiency-wrapper"></div>
+                    
+                    <div class="system-actions card-container">
+                        <h3 class="section-subtitle">Gestión del Sistema</h3>
+                        <div class="action-grid">
+                            <button id="btn-add-employee" class="btn-outline">
+                                <span class="icon">+</span> Nuevo Empleado
+                            </button>
+                            <button id="btn-manage-employees" class="btn-outline">
+                                <span class="icon">👥</span> Admin. Personal
+                            </button>
+                            <button id="btn-add-task" class="btn-outline">
+                                <span class="icon">+</span> Nueva Actividad
+                            </button>
+                            <button id="btn-manage-tasks" class="btn-outline">
+                                <span class="icon">✏️</span> Admin. Actividades
+                            </button>
+                        </div>
+                        <div class="danger-zone">
+                            <button id="btn-clear-data" class="btn-danger">
+                                <span class="icon">⚠️</span> Borrar Historial de Registros
+                            </button>
+                            <button id="btn-print-report" class="btn-primary">
+                                <span class="icon">🖨️</span> Generar Informe PDF
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Modals -->
         <div id="modal-employee" class="modal hidden">
+            <div class="modal-backdrop"></div>
             <div class="modal-content">
-                <h3>Nuevo Empleado</h3>
-                <input type="text" id="new-employee-name" placeholder="Nombre del empleado">
+                <div class="modal-header">
+                    <h3>Alta de Personal</h3>
+                </div>
+                <div class="modal-body">
+                    <label class="modal-label">Nombre Completo del Empleado</label>
+                    <input type="text" id="new-employee-name" class="input-elegant" placeholder="Ej: Juan Pérez">
+                </div>
                 <div class="modal-actions">
-                    <button id="btn-cancel-employee" class="btn-secondary">Cancelar</button>
-                    <button id="btn-confirm-employee" class="btn-primary">Agregar</button>
+                    <button id="btn-cancel-employee" class="btn-ghost">Cancelar</button>
+                    <button id="btn-confirm-employee" class="btn-primary">Confirmar Alta</button>
                 </div>
             </div>
         </div>
 
         <div id="modal-task" class="modal hidden">
+            <div class="modal-backdrop"></div>
             <div class="modal-content">
-                <h3>Nueva Actividad</h3>
-                <input type="text" id="new-task-name" placeholder="Nombre de la actividad">
+                <div class="modal-header">
+                    <h3>Alta de Actividad Operativa</h3>
+                </div>
+                <div class="modal-body">
+                    <label class="modal-label">Descripción de la Actividad</label>
+                    <input type="text" id="new-task-name" class="input-elegant" placeholder="Ej: Relevamiento perimetral">
+                </div>
                 <div class="modal-actions">
-                    <button id="btn-cancel-task" class="btn-secondary">Cancelar</button>
-                    <button id="btn-confirm-task" class="btn-primary">Agregar</button>
+                    <button id="btn-cancel-task" class="btn-ghost">Cancelar</button>
+                    <button id="btn-confirm-task" class="btn-primary">Confirmar Alta</button>
                 </div>
             </div>
         </div>
 
         <div id="modal-manage-tasks" class="modal hidden">
-            <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
-                <h3>Administrar Actividades</h3>
-                <div id="manage-tasks-list" style="margin-bottom: 16px; text-align: left; display: flex; flex-direction: column; gap: 8px;"></div>
+            <div class="modal-backdrop"></div>
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <h3>Administración de Actividades</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="manage-tasks-list" class="manage-list"></div>
+                </div>
                 <div class="modal-actions">
-                    <button id="btn-close-manage-tasks" class="btn-secondary">Cerrar</button>
+                    <button id="btn-close-manage-tasks" class="btn-primary">Finalizar</button>
                 </div>
             </div>
         </div>
 
         <div id="modal-manage-employees" class="modal hidden" style="z-index: 102;">
-            <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
-                <h3>Administrar Personal</h3>
-                <div id="manage-employees-list" style="margin-bottom: 16px; text-align: left; display: flex; flex-direction: column; gap: 8px;"></div>
+            <div class="modal-backdrop"></div>
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <h3>Administración de Personal</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="manage-employees-list" class="manage-list"></div>
+                </div>
                 <div class="modal-actions">
-                    <button id="btn-close-manage-employees" class="btn-secondary">Cerrar</button>
+                    <button id="btn-close-manage-employees" class="btn-primary">Finalizar</button>
                 </div>
             </div>
         </div>
 
         <div id="modal-edit-employee" class="modal hidden" style="z-index: 103;">
+            <div class="modal-backdrop"></div>
             <div class="modal-content">
-                <h3>Modificar Empleado</h3>
-                <input type="text" id="edit-employee-name" placeholder="Nuevo nombre del empleado">
-                <input type="hidden" id="edit-employee-old-name">
+                <div class="modal-header">
+                    <h3>Modificación de Ficha</h3>
+                </div>
+                <div class="modal-body">
+                    <label class="modal-label">Corrección de Nombre</label>
+                    <input type="text" id="edit-employee-name" class="input-elegant" placeholder="Nombre correcto">
+                    <input type="hidden" id="edit-employee-old-name">
+                </div>
                 <div class="modal-actions">
-                    <button id="btn-cancel-edit-employee" class="btn-secondary">Cancelar</button>
-                    <button id="btn-confirm-edit-employee" class="btn-primary">Guardar Cambios</button>
+                    <button id="btn-cancel-edit-employee" class="btn-ghost">Descartar</button>
+                    <button id="btn-confirm-edit-employee" class="btn-primary">Aplicar Corrección</button>
                 </div>
             </div>
         </div>
 
         <div id="modal-edit-task" class="modal hidden" style="z-index: 101;">
+            <div class="modal-backdrop"></div>
             <div class="modal-content">
-                <h3>Modificar Actividad</h3>
-                <input type="text" id="edit-task-name" placeholder="Nuevo nombre de la actividad">
-                <input type="hidden" id="edit-task-old-name">
+                <div class="modal-header">
+                    <h3>Modificación de Actividad</h3>
+                </div>
+                <div class="modal-body">
+                    <label class="modal-label">Corrección de Nomenclatura</label>
+                    <input type="text" id="edit-task-name" class="input-elegant" placeholder="Nueva nomenclatura">
+                    <input type="hidden" id="edit-task-old-name">
+                </div>
                 <div class="modal-actions">
-                    <button id="btn-cancel-edit-task" class="btn-secondary">Cancelar</button>
-                    <button id="btn-confirm-edit-task" class="btn-primary">Guardar Cambios</button>
+                    <button id="btn-cancel-edit-task" class="btn-ghost">Descartar</button>
+                    <button id="btn-confirm-edit-task" class="btn-primary">Aplicar Corrección</button>
                 </div>
             </div>
         </div>
 
         <div id="modal-confirm-clear" class="modal hidden" style="z-index: 105;">
-            <div class="modal-content" style="text-align: center;">
-                <h3 style="color: var(--error); margin-bottom: 15px;">⚠️ Advertencia</h3>
-                <p style="margin-bottom: 25px; font-size: 1.1rem;">¿Está seguro que desea eliminar todos los registros del personal de forma permanente?</p>
-                <div style="display: flex; gap: 15px; justify-content: center;">
-                    <button id="btn-cancel-clear" class="btn-secondary" style="flex: 1;">No</button>
-                    <button id="btn-confirm-clear" class="btn-primary" style="flex: 1; background: var(--error);">Sí</button>
+            <div class="modal-backdrop"></div>
+            <div class="modal-content alert-modal">
+                <div class="alert-icon">⚠️</div>
+                <h3 class="alert-title">Acción Irreversible</h3>
+                <p class="alert-desc">¿Está seguro que desea purgar <strong>todos los registros operativos y el padrón de personal</strong> de forma permanente del servidor?</p>
+                <div class="modal-actions alert-actions">
+                    <button id="btn-cancel-clear" class="btn-ghost">Abortar Operación</button>
+                    <button id="btn-confirm-clear" class="btn-danger">Sí, Purgar Base de Datos</button>
                 </div>
             </div>
         </div>
