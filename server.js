@@ -1,15 +1,31 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+const { MongoClient } = require('mongodb');
 
 const app = express();
-const PORT = 3000;
-const DATA_FILE = path.join(__dirname, 'data.json');
+const PORT = process.env.PORT || 3000;
+
+// MongoDB Connection Setup
+const uri = process.env.MONGODB_URI;
+let dbClient;
+let controlDb;
+
+async function connectDB() {
+    try {
+        dbClient = new MongoClient(uri);
+        await dbClient.connect();
+        controlDb = dbClient.db("control_personal_db");
+        console.log("✅ Successfully connected to MongoDB Atlas!");
+    } catch (err) {
+        console.error("❌ MongoDB connection error:", err);
+        process.exit(1);
+    }
+}
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname))); // Serve static files from the project root
+app.use(express.static(__dirname)); // Serve static files from the project root
 
 // Login endpoint (hardcoded)
 app.post('/api/login', (req, res) => {
@@ -21,35 +37,68 @@ app.post('/api/login', (req, res) => {
     }
 });
 
-// Get data endpoint
-app.get('/api/data', (req, res) => {
-    fs.readFile(DATA_FILE, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading data file:', err);
-            return res.status(500).json({ error: 'Failed to read data' });
-        }
-        try {
-            const jsonData = JSON.parse(data);
-            res.json(jsonData);
-        } catch (parseError) {
-            console.error('Error parsing data file:', parseError);
-            res.status(500).json({ error: 'Failed to parse data' });
-        }
-    });
+// --- New MongoDB API Endpoints ---
+
+// GET: Fetch all data from MongoDB
+app.get('/api/data', async (req, res) => {
+    try {
+        if (!controlDb) return res.status(500).json({ error: 'Database not connected' });
+        
+        // Fetch all 3 collections. If empty, return default empty arrays.
+        const empleados = await controlDb.collection('empleados').find({}).toArray();
+        const actividades = await controlDb.collection('actividades').find({}).toArray();
+        const registros = await controlDb.collection('registros').find({}).toArray();
+        
+        res.json({ 
+            empleados: empleados.map(e => e.name), 
+            actividades: actividades.map(a => a.name), 
+            registros: registros 
+        });
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).json({ error: 'Error reading from database' });
+    }
 });
 
-// Save data endpoint
-app.post('/api/data', (req, res) => {
-    const newData = req.body;
-    fs.writeFile(DATA_FILE, JSON.stringify(newData, null, 2), 'utf8', (err) => {
-        if (err) {
-            console.error('Error writing data file:', err);
-            return res.status(500).json({ error: 'Failed to write data' });
+// POST: Save/Update data to MongoDB
+app.post('/api/data', async (req, res) => {
+    try {
+        if (!controlDb) return res.status(500).json({ error: 'Database not connected' });
+        const { empleados, actividades, registros } = req.body;
+        
+        if (empleados) {
+            await controlDb.collection('empleados').deleteMany({});
+            if (empleados.length > 0) {
+                const empDocs = empleados.map(name => ({ name }));
+                await controlDb.collection('empleados').insertMany(empDocs);
+            }
         }
-        res.json({ success: true });
-    });
+        
+        if (actividades) {
+            await controlDb.collection('actividades').deleteMany({});
+            if (actividades.length > 0) {
+                const actDocs = actividades.map(name => ({ name }));
+                await controlDb.collection('actividades').insertMany(actDocs);
+            }
+        }
+        
+        if (registros) {
+            await controlDb.collection('registros').deleteMany({});
+            if (registros.length > 0) {
+                await controlDb.collection('registros').insertMany(registros);
+            }
+        }
+
+        res.json({ success: true, message: 'Datos guardados exitosamente en MongoDB.' });
+    } catch (error) {
+        console.error("Error saving data:", error);
+        res.status(500).json({ error: 'Error writing to database' });
+    }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running accurately on http://localhost:${PORT}`);
+// Initialize DB and then start server
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running accurately on http://localhost:${PORT}`);
+    });
 });
