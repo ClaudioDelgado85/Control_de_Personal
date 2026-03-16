@@ -93,19 +93,23 @@ function decrement(index) {
     }
 }
 
-function renderEmployees() {
+function renderEmployees(filtro = '') {
     const container = document.getElementById('employee-list');
     if (!container) return;
     container.innerHTML = '';
     
     if (!db.empleados || !Array.isArray(db.empleados)) return;
     
+    const searchLower = filtro.toLowerCase().trim();
+    
     db.empleados.forEach(function(empleado) {
-        var div = document.createElement('div');
-        div.className = 'employee-item';
-        div.textContent = empleado;
-        div.onclick = function() { selectEmployee(empleado); };
-        container.appendChild(div);
+        if (empleado.toLowerCase().includes(searchLower)) {
+            var btn = document.createElement('button');
+            btn.className = 'employee-button';
+            btn.textContent = empleado;
+            btn.onclick = function() { selectEmployee(empleado); };
+            container.appendChild(btn);
+        }
     });
 }
 
@@ -420,6 +424,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.getElementById('selected-date').value = getFechaActual();
     document.getElementById('task-date').value = getFechaActual();
+    
+    // Setup Search Event Listener
+    var searchInput = document.getElementById('employee-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            renderEmployees(e.target.value);
+        });
+    }
     
     renderEmployees();
     

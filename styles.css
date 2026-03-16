@@ -430,9 +430,16 @@ button:disabled {
 }
 
 .employee-button:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     border-color: var(--accent-color);
+    background-color: #f0f9ff; /* Sutil azul claro en hover */
+}
+
+.employee-button:active {
+    transform: translateY(1px);
+    background-color: #e0f2fe;
+    box-shadow: var(--shadow-sm);
 }
 
 .task-item {
