@@ -34,9 +34,14 @@
                         <label for="login-username">Usuario</label>
                         <input type="text" id="login-username" placeholder="Ej: admin">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group password-group">
                         <label for="login-password">Contraseña</label>
-                        <input type="password" id="login-password" placeholder="••••••••">
+                        <div class="input-with-icon">
+                            <input type="password" id="login-password" placeholder="••••••••">
+                            <button type="button" id="toggle-password" class="btn-toggle-password" aria-label="Mostrar contraseña">
+                                <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
                     </div>
                     <button id="btn-login" class="btn-primary btn-full btn-large">Ingresar al Sistema</button>
                     <p id="login-error" class="error-msg hidden">Credenciales incorrectas. Verifique por favor.</p>
@@ -50,12 +55,17 @@
                             <h2>Panel Operativo</h2>
                             <p class="text-light">Seleccione el personal para registrar actividades.</p>
                         </div>
-                        <div class="quick-actions">
-                            <button id="btn-add-employee" class="btn-outline btn-sm">
-                                <span class="icon">+</span> Nuevo Empleado
-                            </button>
-                            <button id="btn-manage-employees" class="btn-outline btn-sm">
-                                <span class="icon">👥</span> Admin. Personal
+                        <div class="quick-actions-container">
+                            <div class="quick-actions">
+                                <button id="btn-add-employee" class="btn-outline btn-sm">
+                                    <span class="icon">+</span> Nuevo Empleado
+                                </button>
+                                <button id="btn-manage-employees" class="btn-outline btn-sm">
+                                    <span class="icon">👥</span> Admin. Personal
+                                </button>
+                            </div>
+                            <button id="btn-metrics" class="btn-primary btn-sm btn-full" style="margin-top: 0.5rem;">
+                                📊 Ver Informe de Rendimiento
                             </button>
                         </div>
                     </div>
@@ -75,11 +85,7 @@
                         <!-- Employee items injected by JS -->
                     </div>
                     
-                    <div class="action-bar-bottom">
-                        <button id="btn-metrics" class="btn-primary btn-large btn-full">
-                            📊 Ver Informe de Rendimiento (Métricas)
-                        </button>
-                    </div>
+
                 </section>
 
                 <section id="tasks-section" class="section hidden fade-in">
