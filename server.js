@@ -27,10 +27,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname)); // Serve static files from the project root
 
-// Login endpoint (hardcoded)
+// Login endpoint
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
-    if (username === 'admin' && password === 'admin123') {
+    
+    // Leer credenciales desde las variables de entorno
+    const validUser = process.env.ADMIN_USER || 'admin';
+    const validPass = process.env.ADMIN_PASS || 'admin123';
+
+    if (username === validUser && password === validPass) {
         res.json({ success: true, token: 'fake-jwt-token' });
     } else {
         res.status(401).json({ success: false, message: 'Usuario o contraseña incorrectos' });
