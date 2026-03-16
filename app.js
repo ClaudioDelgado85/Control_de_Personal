@@ -425,11 +425,28 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('selected-date').value = getFechaActual();
     document.getElementById('task-date').value = getFechaActual();
     
-    // Setup Search Event Listener
+    // Setup Search Event Listener for Empleados
     var searchInput = document.getElementById('employee-search');
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
             renderEmployees(e.target.value);
+        });
+    }
+
+    // Setup Search Event Listener for Actividades
+    var taskSearchInput = document.getElementById('task-search');
+    if (taskSearchInput) {
+        taskSearchInput.addEventListener('input', function(e) {
+            var filtro = e.target.value.toLowerCase().trim();
+            var items = document.querySelectorAll('.task-counter-item');
+            items.forEach(function(item) {
+                var label = item.querySelector('label');
+                if (label && label.textContent.toLowerCase().includes(filtro)) {
+                    item.style.display = ''; // Revert to default
+                } else {
+                    item.style.display = 'none'; // Hide
+                }
+            });
         });
     }
     
