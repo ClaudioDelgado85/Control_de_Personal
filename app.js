@@ -511,7 +511,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         var msg = document.getElementById('save-message');
         msg.classList.remove('hidden');
-        setTimeout(function() { msg.classList.add('hidden'); }, 2000);
+        msg.classList.add('visible');
+        setTimeout(function() { 
+            msg.classList.remove('visible');
+            setTimeout(function() { msg.classList.add('hidden'); }, 400);
+        }, 2500);
     };
 
     document.getElementById('btn-metrics').onclick = function() {
@@ -742,24 +746,57 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('modal-confirm-clear').classList.add('hidden');
     };
 
-    document.getElementById('btn-confirm-clear').onclick = function() {
-        db.registros = [];
-        db.empleados = []; // CLEAR ALL EMPLOYEES
-        saveDB();
-        renderMetrics();
-        renderEmployees(); // Update main employee list
-        document.getElementById('modal-confirm-clear').classList.add('hidden');
-        
+    // Helper function for showing the danger toast
+    function showDangerToast(text) {
         var msg = document.getElementById('save-message');
         if(msg) {
-            msg.innerText = 'Historial borrado permanentemente.';
-            msg.style.color = '#d63031';
+            msg.innerText = text;
+            msg.style.background = 'linear-gradient(135deg, #dc2626, #ef4444)';
+            msg.style.boxShadow = '0 4px 20px rgba(220, 38, 38, 0.35)';
             msg.classList.remove('hidden');
+            msg.classList.add('visible');
             setTimeout(function() { 
-                msg.classList.add('hidden'); 
-                msg.style.color = 'var(--success)';
-                msg.innerText = '¡Guardado exitosamente!';
+                msg.classList.remove('visible');
+                setTimeout(function() {
+                    msg.classList.add('hidden'); 
+                    msg.style.background = '';
+                    msg.style.boxShadow = '';
+                    msg.innerText = '✔️ ¡Registro guardado con éxito!';
+                }, 400);
             }, 3000);
+        }
+    }
+
+    document.getElementById('btn-clear-registros').onclick = function() {
+        if(confirm('¿Está seguro que desea borrar TODOS los registros de actividades diarias?')) {
+            db.registros = [];
+            saveDB();
+            renderMetrics();
+            document.getElementById('modal-confirm-clear').classList.add('hidden');
+            showDangerToast('Registros de actividades eliminados.');
+        }
+    };
+
+    document.getElementById('btn-clear-empleados').onclick = function() {
+        if(confirm('¿Está seguro que desea borrar TODA la lista de empleados?')) {
+            db.empleados = [];
+            saveDB();
+            renderEmployees();
+            document.getElementById('modal-confirm-clear').classList.add('hidden');
+            showDangerToast('Lista de empleados eliminada.');
+        }
+    };
+
+    document.getElementById('btn-clear-todo').onclick = function() {
+        if(confirm('⚠️ ATENCIÓN: ¿Está seguro que desea borrar TODO? (Empleados + Registros + Actividades). Esta acción es IRREVERSIBLE.')) {
+            db.registros = [];
+            db.empleados = [];
+            db.actividades = [];
+            saveDB();
+            renderMetrics();
+            renderEmployees();
+            document.getElementById('modal-confirm-clear').classList.add('hidden');
+            showDangerToast('Sistema reseteado completamente.');
         }
     };
 });

@@ -11,6 +11,7 @@
 </head>
 <body>
     <div class="app-wrapper">
+        <div id="save-message" class="floating-toast hidden">✔️ ¡Registro guardado con éxito!</div>
         <header class="global-header">
             <div class="logo-area">
                 <div class="logo-icon">🏛️</div>
@@ -113,7 +114,6 @@
                     
                     <div class="actions fixed-bottom-action">
                         <button id="btn-save" class="btn-primary btn-large btn-full">💾 Guardar Registro Diario</button>
-                        <div id="save-message" class="success-toast hidden">✔️ ¡Registro centralizado con éxito!</div>
                     </div>
                 </section>
 
@@ -277,11 +277,33 @@
             <div class="modal-backdrop"></div>
             <div class="modal-content alert-modal">
                 <div class="alert-icon">⚠️</div>
-                <h3 class="alert-title">Acción Irreversible</h3>
-                <p class="alert-desc">¿Está seguro que desea purgar <strong>todos los registros operativos y el padrón de personal</strong> de forma permanente del servidor?</p>
+                <h3 class="alert-title">Gestión de Datos</h3>
+                <p class="alert-desc">Seleccione qué información desea eliminar del sistema. <strong>Esta acción no se puede deshacer.</strong></p>
+                <div class="clear-options">
+                    <button id="btn-clear-registros" class="btn-clear-option btn-clear-warning">
+                        <span class="clear-option-icon">🗑️</span>
+                        <span class="clear-option-text">
+                            <strong>Borrar Registros de Actividades</strong>
+                            <small>Elimina el historial diario. El personal y actividades se mantienen.</small>
+                        </span>
+                    </button>
+                    <button id="btn-clear-empleados" class="btn-clear-option btn-clear-warning">
+                        <span class="clear-option-icon">👥</span>
+                        <span class="clear-option-text">
+                            <strong>Borrar Lista de Empleados</strong>
+                            <small>Elimina todo el personal. Los registros y actividades se mantienen.</small>
+                        </span>
+                    </button>
+                    <button id="btn-clear-todo" class="btn-clear-option btn-clear-danger">
+                        <span class="clear-option-icon">⚠️</span>
+                        <span class="clear-option-text">
+                            <strong>Borrar TODO</strong>
+                            <small>Elimina empleados, registros y actividades. Reset total.</small>
+                        </span>
+                    </button>
+                </div>
                 <div class="modal-actions alert-actions">
-                    <button id="btn-cancel-clear" class="btn-ghost">Abortar Operación</button>
-                    <button id="btn-confirm-clear" class="btn-danger">Sí, Purgar Base de Datos</button>
+                    <button id="btn-cancel-clear" class="btn-ghost btn-full">Cancelar</button>
                 </div>
             </div>
         </div>

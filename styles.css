@@ -328,17 +328,27 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus
     border-left: 3px solid var(--danger-color);
 }
 
-.success-toast {
-    color: var(--success-color);
-    background-color: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-md);
+.floating-toast {
+    position: fixed;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    color: #fff;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    padding: 0.85rem 2rem;
+    border-radius: var(--radius-full);
     font-weight: 600;
+    font-size: 0.95rem;
     text-align: center;
-    margin-top: 1rem;
-    box-shadow: var(--shadow-sm);
-    animation: slideUp 0.3s ease-out;
+    box-shadow: 0 4px 20px rgba(22, 163, 74, 0.35);
+    transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.floating-toast.visible {
+    top: 20px;
 }
 
 /* ==========================================================================
@@ -682,6 +692,78 @@ tbody tr:hover { background-color: var(--bg-input); }
 .alert-title { color: var(--danger-color); font-size: 1.5rem; margin-bottom: 1rem; }
 .alert-desc { font-size: 1.1rem; color: var(--text-muted); padding: 0 1rem 1rem; }
 .alert-actions { justify-content: center; }
+
+/* Clear Options */
+.clear-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0.5rem 1rem 1rem;
+    width: calc(100% - 2rem);
+}
+
+.btn-clear-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid;
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--transition-fast);
+    font-family: inherit;
+}
+
+.btn-clear-option:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-clear-option:active {
+    transform: translateY(1px);
+}
+
+.clear-option-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.clear-option-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.clear-option-text strong {
+    font-size: 0.95rem;
+}
+
+.clear-option-text small {
+    font-size: 0.78rem;
+    opacity: 0.8;
+}
+
+.btn-clear-warning {
+    background: #fffbeb;
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+.btn-clear-warning:hover {
+    background: #fef3c7;
+}
+
+.btn-clear-danger {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.btn-clear-danger:hover {
+    background: #fee2e2;
+}
 
 /* Manage Lists inside Modals */
 .manage-list {
