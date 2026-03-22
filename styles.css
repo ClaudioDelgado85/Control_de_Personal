@@ -626,6 +626,180 @@ tbody tr:hover { background-color: var(--bg-input); }
 }
 
 /* ==========================================================================
+   MOBILE CARD VIEW FOR PERFORMANCE REPORT
+   ========================================================================== */
+
+/* Hide mobile cards by default (desktop shows the table) */
+.summary-mobile {
+    display: none;
+}
+
+.emp-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-fast);
+}
+
+.emp-card:last-child {
+    margin-bottom: 0;
+}
+
+.emp-card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+    padding: 0.875rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background var(--transition-fast);
+}
+
+.emp-card-header:active {
+    background: var(--primary-color);
+}
+
+.emp-card-icon {
+    font-size: 1.25rem;
+}
+
+.emp-card-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    flex: 1;
+}
+
+.emp-card-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full);
+}
+
+.emp-card-chevron {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+/* Accordion body hidden by default */
+.emp-card-body {
+    display: none;
+}
+
+/* Expanded state */
+.emp-card.expanded .emp-card-body {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.emp-card.expanded .emp-card-chevron {
+    transform: rotate(90deg);
+}
+
+.emp-card-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.emp-card-stat {
+    background: var(--bg-card);
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.emp-card-stat-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    line-height: 1.2;
+}
+
+.emp-card-stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.emp-card-detail {
+    padding: 0.75rem 1rem;
+}
+
+.emp-card-detail-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px dashed var(--border-subtle);
+}
+
+.emp-card-detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.emp-card-detail-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--bg-input);
+    font-size: 0.875rem;
+}
+
+.emp-card-detail-list li:last-child {
+    border-bottom: none;
+}
+
+.emp-card-act-name {
+    color: var(--text-main);
+    flex: 1;
+    padding-right: 0.75rem;
+    line-height: 1.35;
+}
+
+.emp-card-act-count {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent-color);
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+}
+
+.emp-card-empty {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-style: italic;
+    padding: 0.5rem 0;
+}
+
+/* ==========================================================================
    MODALS
    ========================================================================== */
 
@@ -864,10 +1038,13 @@ tbody tr:hover { background-color: var(--bg-input); }
         padding: 1rem;
     }
     
-    /* Make tables scrollable horizontally on small screens */
-    .summary-table {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+    /* Switch from table to card layout on mobile */
+    .summary-desktop {
+        display: none;
+    }
+    
+    .summary-mobile {
+        display: block;
     }
     
     .danger-zone {

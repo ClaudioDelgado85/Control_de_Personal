@@ -296,7 +296,9 @@ function renderSummary(registros) {
         });
     }
     
-    var html = '<table style="width: 100%; border-collapse: collapse;"><thead><tr><th>Empleado</th><th>Días trab.</th><th>Total act.</th><th>Promedio/día</th><th>Detalle por Actividad</th></tr></thead><tbody>';
+    // === DESKTOP TABLE VIEW ===
+    var tableHtml = '<div class="summary-desktop">';
+    tableHtml += '<table style="width: 100%; border-collapse: collapse;"><thead><tr><th>Empleado</th><th>Días trab.</th><th>Total act.</th><th>Promedio/día</th><th>Detalle por Actividad</th></tr></thead><tbody>';
     
     Object.keys(summary).forEach(function(emp) {
         var s = summary[emp];
@@ -316,11 +318,55 @@ function renderSummary(registros) {
             desglose = '<span style="color: #999;">Sin actividades</span>';
         }
         
-        html += '<tr><td>' + emp + '</td><td>' + dias + '</td><td>' + s.total + '</td><td>' + promedio + '</td><td>' + desglose + '</td></tr>';
+        tableHtml += '<tr><td>' + emp + '</td><td>' + dias + '</td><td>' + s.total + '</td><td>' + promedio + '</td><td>' + desglose + '</td></tr>';
     });
     
-    html += '</tbody></table>';
-    container.innerHTML = html;
+    tableHtml += '</tbody></table></div>';
+
+    // === MOBILE CARD VIEW (Accordion) ===
+    var cardHtml = '<div class="summary-mobile">';
+    cardHtml += '<button class="emp-card-toggle-all btn-outline btn-sm" onclick="toggleAllCards()" style="width:100%;margin-bottom:0.75rem;">📋 Expandir Todo</button>';
+    
+    Object.keys(summary).forEach(function(emp) {
+        var s = summary[emp];
+        var dias = s.dias.size;
+        var promedio = dias > 0 ? (s.total / dias).toFixed(1) : '0';
+        
+        cardHtml += '<div class="emp-card">';
+        cardHtml += '<div class="emp-card-header" onclick="toggleCard(this)">';
+        cardHtml += '<span class="emp-card-icon">👤</span>';
+        cardHtml += '<span class="emp-card-name">' + emp + '</span>';
+        cardHtml += '<span class="emp-card-badge">' + s.total + '</span>';
+        cardHtml += '<span class="emp-card-chevron">▸</span>';
+        cardHtml += '</div>';
+        cardHtml += '<div class="emp-card-body">';
+        cardHtml += '<div class="emp-card-metrics">';
+        cardHtml += '<div class="emp-card-stat"><span class="emp-card-stat-value">' + dias + '</span><span class="emp-card-stat-label">Días trab.</span></div>';
+        cardHtml += '<div class="emp-card-stat"><span class="emp-card-stat-value">' + s.total + '</span><span class="emp-card-stat-label">Total act.</span></div>';
+        cardHtml += '<div class="emp-card-stat"><span class="emp-card-stat-value">' + promedio + '</span><span class="emp-card-stat-label">Prom/día</span></div>';
+        cardHtml += '</div>';
+        
+        if (s.total > 0) {
+            cardHtml += '<div class="emp-card-detail">';
+            cardHtml += '<div class="emp-card-detail-title">Detalle de Actividades</div>';
+            cardHtml += '<ul class="emp-card-detail-list">';
+            Object.keys(s.actividades).forEach(function(act) {
+                if (s.actividades[act] > 0) {
+                    cardHtml += '<li><span class="emp-card-act-name">' + act + '</span><span class="emp-card-act-count">' + s.actividades[act] + '</span></li>';
+                }
+            });
+            cardHtml += '</ul></div>';
+        } else {
+            cardHtml += '<div class="emp-card-detail"><div class="emp-card-empty">Sin actividades registradas</div></div>';
+        }
+        
+        cardHtml += '</div>'; // close emp-card-body
+        cardHtml += '</div>'; // close emp-card
+    });
+    
+    cardHtml += '</div>';
+    
+    container.innerHTML = tableHtml + cardHtml;
 
     // Efficiency computation
     var effBox = document.getElementById('efficiency-box');
@@ -800,3 +846,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 });
+
+window.toggleCard = function(headerElement) {
+    if (!headerElement || !headerElement.parentElement) return;
+    var card = headerElement.parentElement;
+    card.classList.toggle('expanded');
+};
+
+window.toggleAllCards = function() {
+    var cards = document.querySelectorAll('.summary-mobile .emp-card');
+    var allExpanded = true;
+    
+    cards.forEach(function(card) {
+        if (!card.classList.contains('expanded')) {
+            allExpanded = false;
+        }
+    });
+    
+    var btn = document.querySelector('.emp-card-toggle-all');
+    
+    if (allExpanded) {
+        cards.forEach(function(card) {
+            card.classList.remove('expanded');
+        });
+        if (btn) btn.innerHTML = '📋 Expandir Todo';
+    } else {
+        cards.forEach(function(card) {
+            card.classList.add('expanded');
+        });
+        if (btn) btn.innerHTML = '📋 Contraer Todo';
+    }
+};
